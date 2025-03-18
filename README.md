@@ -17,13 +17,19 @@
 3. **API版（推奨）** - `fish_speech_space_api.ipynb`
    * Hugging Face Spaces APIを使用
    * 公式デモサイトのバックエンドAPIを呼び出し
-   * **最も安定した実装方法**
+   * ウィジェットを使用した対話型インターフェース
 
-4. **シンプル版（NEW!）** - `fish_speech_simple.ipynb`
-   * **ipywidgetsを使用しない**シンプルな実装
+4. **シンプル版** - `fish_speech_simple.ipynb`
+   * ipywidgetsを使用しないシンプルな実装
    * ウィジェット表示の問題を回避
    * セルごとに個別に実行する手順ベースのアプローチ
-   * API版と同様の安定性
+
+5. **超シンプル版（最新・最も安定）** - `fish_speech_ultra_simple.ipynb` ✨
+   * **ファイルアップロードエラーを修正**
+   * ファイルパスを直接指定するアプローチ
+   * テキストを直接セルに記述する方法
+   * 最もトラブルが少ない実装
+   * **すべての環境で動作する推奨版**
 
 ## 特徴
 
@@ -33,22 +39,13 @@
 - **音声ファイルのブラウザ内再生とダウンロード**
 - **複数の言語対応**: 日本語、英語、中国語など
 
-## ウィジェット表示問題について
+## エラー修正
 
-Jupyter Notebookで「HTML(value=)」といった形でウィジェットが表示されない問題が発生することがあります。この問題の対処法：
+以下のエラーを修正しました：
 
-1. **ipywidgets拡張機能のインストール**:
-   ```bash
-   # JupyterLabの場合
-   jupyter labextension install @jupyter-widgets/jupyterlab-manager
-   
-   # Jupyter Notebookの場合
-   jupyter nbextension enable --py widgetsnbextension
-   ```
-
-2. **ブラウザキャッシュのクリア**: ブラウザのキャッシュをクリアして再起動
-
-3. **シンプル版を使用**: ウィジェットを使用しない `fish_speech_simple.ipynb` を使用
+- **「KeyError: 'dual_ar'」**: モデルの内部構造に関するエラー → API版、シンプル版、超シンプル版で修正
+- **「tuple object has no attribute 'values'」**: ファイルアップロード処理に関するエラー → 超シンプル版で修正
+- **「HTML(value=)」表示問題**: Jupyter UIの問題 → シンプル版、超シンプル版で回避
 
 ## インストール方法
 
@@ -57,11 +54,11 @@ Jupyter Notebookで「HTML(value=)」といった形でウィジェットが表�
 git clone https://github.com/ShunsukeTamura06/fish-speech-japanese-converter.git
 cd fish-speech-japanese-converter
 
-# 必要なライブラリをインストール（API版の場合）
+# 必要なライブラリをインストール
 pip install torch torchaudio numpy scipy requests soundfile
 ```
 
-## 使用方法（シンプル版 - 最新）
+## 使用方法（超シンプル版 - 最新の推奨版）
 
 1. Jupyter Notebookを起動
 
@@ -69,7 +66,7 @@ pip install torch torchaudio numpy scipy requests soundfile
 jupyter notebook
 ```
 
-2. `fish_speech_simple.ipynb` を開く
+2. `fish_speech_ultra_simple.ipynb` を開く
 
 3. 初回実行時は、必要なライブラリをインストールするセルを実行
 
@@ -77,17 +74,16 @@ jupyter notebook
 !pip install torch torchaudio numpy scipy requests soundfile
 ```
 
-4. ファイル処理または直接入力のセルを実行
+4. 以下のいずれかの方法でテキストを変換：
 
-5. サンプルファイル `sample_text.txt` を使用するか、直接テキストを入力して音声に変換できます
+   - **サンプルテキスト変換**: セル4を実行（リポジトリ内のsample_text.txtを使用）
+   - **指定したファイルパスから変換**: セル5を編集して実行（自分のファイルパスを指定）
+   - **直接テキストを入力**: セル6を編集して実行（テキストを直接セルに記述）
+   - **テキストをファイルに保存してから変換**: セル9を編集して実行（長文処理に便利）
 
-## 修正点
-
-当初の実装では、Fish-Speech-1.5モデルの使用中に「KeyError: 'dual_ar'」エラーが発生する問題がありました。この問題を解決するため、以下の代替アプローチを用意しました：
-
-1. **ONNX版**: モデルをONNX形式でダウンロードして使用（ローカル実行）
-2. **API版**: Hugging Face Spaces APIを使用（推奨）
-3. **シンプル版**: ウィジェットを使わないAPI版（Jupyter環境に依存しない実装）
+5. その他の機能：
+   - 様々な速度でのテスト（セル7）
+   - 複数言語のテスト（セル8）
 
 ## モデルについて
 
