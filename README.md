@@ -19,14 +19,36 @@
    * 公式デモサイトのバックエンドAPIを呼び出し
    * **最も安定した実装方法**
 
+4. **シンプル版（NEW!）** - `fish_speech_simple.ipynb`
+   * **ipywidgetsを使用しない**シンプルな実装
+   * ウィジェット表示の問題を回避
+   * セルごとに個別に実行する手順ベースのアプローチ
+   * API版と同様の安定性
+
 ## 特徴
 
 - **GitHubアクセス不要**: Hugging Faceからモデルを直接利用
 - **高品質な日本語音声合成**: 100k時間以上の日本語音声データで学習されたモデル
-- **テキストファイルのアップロード**: 複数のエンコーディング形式に対応 (UTF-8, Shift-JIS, EUC-JP, ISO-2022-JP)
-- **直接テキスト入力機能**: テキストファイルを持たなくても利用可能
 - **発話速度の調整**: 0.5倍～2.0倍の範囲で調整可能
 - **音声ファイルのブラウザ内再生とダウンロード**
+- **複数の言語対応**: 日本語、英語、中国語など
+
+## ウィジェット表示問題について
+
+Jupyter Notebookで「HTML(value=)」といった形でウィジェットが表示されない問題が発生することがあります。この問題の対処法：
+
+1. **ipywidgets拡張機能のインストール**:
+   ```bash
+   # JupyterLabの場合
+   jupyter labextension install @jupyter-widgets/jupyterlab-manager
+   
+   # Jupyter Notebookの場合
+   jupyter nbextension enable --py widgetsnbextension
+   ```
+
+2. **ブラウザキャッシュのクリア**: ブラウザのキャッシュをクリアして再起動
+
+3. **シンプル版を使用**: ウィジェットを使用しない `fish_speech_simple.ipynb` を使用
 
 ## インストール方法
 
@@ -36,10 +58,10 @@ git clone https://github.com/ShunsukeTamura06/fish-speech-japanese-converter.git
 cd fish-speech-japanese-converter
 
 # 必要なライブラリをインストール（API版の場合）
-pip install torch torchaudio numpy scipy ipywidgets requests soundfile
+pip install torch torchaudio numpy scipy requests soundfile
 ```
 
-## 使用方法（API版 - 推奨）
+## 使用方法（シンプル版 - 最新）
 
 1. Jupyter Notebookを起動
 
@@ -47,23 +69,17 @@ pip install torch torchaudio numpy scipy ipywidgets requests soundfile
 jupyter notebook
 ```
 
-2. `fish_speech_space_api.ipynb` を開く
+2. `fish_speech_simple.ipynb` を開く
 
 3. 初回実行時は、必要なライブラリをインストールするセルを実行
 
 ```python
-!pip install torch torchaudio numpy scipy ipywidgets
-!pip install requests
-!pip install soundfile
+!pip install torch torchaudio numpy scipy requests soundfile
 ```
 
-4. メインのコードセルを実行
+4. ファイル処理または直接入力のセルを実行
 
-5. アプリの使用方法:
-   - テキストファイルをアップロード、または直接テキストを入力
-   - 言語と発話速度を選択
-   - 「テキストを変換」ボタンをクリック
-   - 生成された音声を再生、ダウンロード
+5. サンプルファイル `sample_text.txt` を使用するか、直接テキストを入力して音声に変換できます
 
 ## 修正点
 
@@ -71,6 +87,7 @@ jupyter notebook
 
 1. **ONNX版**: モデルをONNX形式でダウンロードして使用（ローカル実行）
 2. **API版**: Hugging Face Spaces APIを使用（推奨）
+3. **シンプル版**: ウィジェットを使わないAPI版（Jupyter環境に依存しない実装）
 
 ## モデルについて
 
@@ -78,18 +95,6 @@ Fish-Speech-1.5は、multiple languages（日本語、英語、中国語など�
 
 Hugging Faceモデルリポジトリ: [fishaudio/fish-speech-1.5](https://huggingface.co/fishaudio/fish-speech-1.5)  
 公式デモサイト: [Fish-Speech デモ](https://huggingface.co/spaces/fishaudio/fish-speech-1)
-
-## 注意点
-
-- API版が最も安定して動作します
-- API版は外部サービスに依存するため、インターネット接続が必要です
-- 長いテキストの処理にはより多くの時間がかかります
-
-## トラブルシューティング
-
-- **KeyError: 'dual_ar'**: 基本版で発生するエラーです。API版を使用してください。
-- **API接続エラー**: インターネット接続を確認し、再試行してください。
-- **その他のエラー**: 最新の実装と互換性のある依存関係をインストールしていることを確認してください。
 
 ## ライセンス
 
